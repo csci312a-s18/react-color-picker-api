@@ -1,18 +1,11 @@
 /*
-  In our first version of the LabeledSlider, the slider maintains its own
-  state. This allows us to see the simple component in action. Note that the input
-  element itself is still a managed component, that is the input's value is
-  determined by this.state.value.
-  */
+  In this version of LabeledSlider, we have pushed the state up to the ColorPicker.
+*/
 class LabeledSlider extends React.Component {
   // If we don't use the props in the constructor, we don't need to include it
   // as an argument but do so for consistency and clarity
   constructor(props) {
     super(props);
-
-    this.state = {
-      value: 0,
-    };
   }
 
   render() {
@@ -33,13 +26,12 @@ class LabeledSlider extends React.Component {
         type: 'range',
         min: 0,
         max: 255,
-        value: this.state.value,
+        value: this.props.value,
         onChange: (event) => {
-          this.setState({ value: event.target.value });
           this.props.valueChange(event.target.value);
         },
       }),
-      React.createElement('span', null, this.state.value),
+      React.createElement('span', null, this.props.value),
     );
   }
 }
@@ -67,14 +59,17 @@ class ColorPicker extends React.Component {
       React.createElement('div', displayProps),
       React.createElement(LabeledSlider, {
         label: 'Red',
+        value: this.state.red,
         valueChange: (value => this.setState({ red: value })),
       }),
       React.createElement(LabeledSlider, {
         label: 'Green',
+        value: this.state.green,
         valueChange: (value => this.setState({ green: value })),
       }),
       React.createElement(LabeledSlider, {
         label: 'Blue',
+        value: this.state.blue,
         valueChange: (value => this.setState({ blue: value })),
       }),
     );
