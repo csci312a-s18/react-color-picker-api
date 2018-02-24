@@ -34,7 +34,10 @@ class LabeledSlider extends React.Component {
         min: 0,
         max: 255,
         value: this.state.value,
-        onChange: event => this.setState({ value: event.target.value }),
+        onChange: (event) => {
+          this.setState({ value: event.target.value });
+          this.props.valueChange(event.target.value);
+        },
       }),
       React.createElement('span', null, this.state.value),
     );
@@ -46,7 +49,7 @@ class LabeledSlider extends React.Component {
 class ColorPicker extends React.Component {
   constructor() {
     super();
-
+    this.state = { red: 0, green: 0, blue: 0 };
   }
 
   render() {
@@ -55,16 +58,25 @@ class ColorPicker extends React.Component {
         width: '100px',
         height: '100px',
         border: '1px solid black',
-        background: 'rgb(0, 0, 0)',
+        background: `rgb(${this.state.red},${this.state.green},${this.state.blue})`,
       },
     };
 
     return React.createElement(
       'div', null,
       React.createElement('div', displayProps),
-      React.createElement(LabeledSlider, { label: 'Red' }),
-      React.createElement(LabeledSlider, { label: 'Green' }),
-      React.createElement(LabeledSlider, { label: 'Blue' }),
+      React.createElement(LabeledSlider, {
+        label: 'Red',
+        valueChange: (value => this.setState({ red: value })),
+      }),
+      React.createElement(LabeledSlider, {
+        label: 'Green',
+        valueChange: (value => this.setState({ green: value })),
+      }),
+      React.createElement(LabeledSlider, {
+        label: 'Blue',
+        valueChange: (value => this.setState({ blue: value })),
+      }),
     );
   }
 }
