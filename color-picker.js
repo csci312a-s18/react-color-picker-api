@@ -1,41 +1,36 @@
 /*
-  In this version of LabeledSlider, we have pushed the state up to the ColorPicker.
+  Since the LabeledSlider is now stateless, we can convert it to a
+  "functional component", which we implement with a simple function
+  instead of using a class.
+
+  It is important that this function is "pure" (i.e., no reliance on external
+  state and no side effects). Note we switched from this.props to props
 */
-class LabeledSlider extends React.Component {
-  // If we don't use the props in the constructor, we don't need to include it
-  // as an argument but do so for consistency and clarity
-  constructor(props) {
-    super(props);
-  }
 
-  render() {
-    const labelProps = {
-      style: {
-        display: 'inline-block',
-        width: '50px',
-        'text-align': 'left',
-      },
-    };
+function LabeledSlider(props) {
+  const labelProps = {
+    style: {
+      display: 'inline-block',
+      width: '50px',
+      'text-align': 'left',
+    },
+  };
 
-    // Once you have called super this.props === props, but here use this.props
-    // for consistency and clarity
-    return React.createElement(
-      'div', null,
-      React.createElement('div', labelProps, `${this.props.label}:`),
-      React.createElement('input', {
-        type: 'range',
-        min: 0,
-        max: 255,
-        value: this.props.value,
-        onChange: (event) => {
-          this.props.valueChange(event.target.value);
-        },
-      }),
-      React.createElement('span', null, this.props.value),
-    );
-  }
+  const inputProps = {
+    type: 'range',
+    min: 0,
+    max: 255,
+    value: props.value,
+    onChange: (event) => { props.valueChange(event.target.value); },
+  };
+
+  return React.createElement(
+    'div', null,
+    React.createElement('div', labelProps, `${props.label}:`),
+    React.createElement('input', inputProps),
+    React.createElement('span', null, props.value),
+  );
 }
-
 
 
 class ColorPicker extends React.Component {
